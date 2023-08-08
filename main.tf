@@ -1,9 +1,12 @@
-terraform {
-  backend "s3" {}
-}
+module "components" {
+  source                = "git::https://github.com/Khyathi304/tf-module-basic-test.git"
 
-variable "test" {}
+  for_each              = var.component
 
-output "test" {
-  value = var.test
+  source                = "./module"
+  zone_id               = var.zone_id
+  security_groups       = var.security_groups
+  name                  = each.value["name"]
+  instance_type         = each.value["instance_type"]
+
 }
